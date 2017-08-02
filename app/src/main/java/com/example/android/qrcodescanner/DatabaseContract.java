@@ -15,8 +15,6 @@ public class DatabaseContract implements BaseColumns {
         public static final String USERS_REG  = "reg";
         public static final String YEAR = "year";
 
-
-
     }
 
 
