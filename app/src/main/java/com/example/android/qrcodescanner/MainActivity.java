@@ -33,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
             else{
                 try{
                     JSONObject obj = new JSONObject(result.getContents());
-                    textView.setText(obj.getString("name") + " , " + obj.getString("address"));
+                    textView.setText("Name: " + obj.getString("name") + "\n" +
+                            "Registeration Number: " + obj.getString("reg") + "\n" +
+                            "Year: " + obj.getString("year"));
 
                 }
                 catch (JSONException e){
