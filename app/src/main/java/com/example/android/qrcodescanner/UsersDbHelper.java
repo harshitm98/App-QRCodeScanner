@@ -18,7 +18,7 @@ public class UsersDbHelper extends SQLiteOpenHelper {
     }
 
     public static final String create_table = "CREATE TABLE " + DatabaseContract.UserEntry.USERS_TABLE_NAME
-            + " ( " + DatabaseContract.UserEntry.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            + " (" + DatabaseContract.UserEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             DatabaseContract.UserEntry.USERS_NAME + " TEXT NOT NULL, " +
             DatabaseContract.UserEntry.USERS_REG + " TEXT NOT NULL, " +
             DatabaseContract.UserEntry.YEAR + " TEXT NOT NULL);";

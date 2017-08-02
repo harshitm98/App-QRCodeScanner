@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private Button viewDatabaseButton;
     private TextView textView;
     private IntentIntegrator qrscan;
-    private UsersDbHelper mDbHelper;
+    public UsersDbHelper mDbHelper;
 
 
 
@@ -42,16 +42,30 @@ public class MainActivity extends AppCompatActivity {
                     ContentValues values = new ContentValues();
 
                     JSONObject obj = new JSONObject(result.getContents());
+                    String name = obj.getString("name");
+                    String reg = obj.getString("reg");
+                    String year = obj.getString("year");
+
                     textView.setText("Name: " + obj.getString("name") + "\n" +
                             "Registration Number: " + obj.getString("reg") + "\n" +
                             "Year: " + obj.getString("year"));
 
-                    values.put(DatabaseContract.UserEntry.USERS_NAME,obj.getString("name"));
-                    values.put(DatabaseContract.UserEntry.USERS_REG,obj.getString("reg"));
-                    values.put(DatabaseContract.UserEntry.YEAR,obj.getString("year"));
-                    SQLiteDatabase db =  mDbHelper.getReadableDatabase();
-                    db.insert(DatabaseContract.UserEntry.USERS_TABLE_NAME,null,values);
-                    Toast.makeText(this,"Data added to database", Toast.LENGTH_SHORT).show();
+                    mDbHelper = new UsersDbHelper(getApplicationContext());
+                    SQLiteDatabase db =  mDbHelper.getWritableDatabase();
+
+                    values.put(DatabaseContract.UserEntry.USERS_NAME,name);
+                    values.put(DatabaseContract.UserEntry.USERS_REG,reg);
+                    values.put(DatabaseContract.UserEntry.YEAR,year);
+
+
+                    long i = db.insert(DatabaseContract.UserEntry.USERS_TABLE_NAME,null,values);
+                    if(i==-1){
+                        Toast.makeText(this,"Error adding data to database", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(this,"Data added to database", Toast.LENGTH_SHORT).show();
+                    }
+
 
                 }
                 catch (JSONException e){
