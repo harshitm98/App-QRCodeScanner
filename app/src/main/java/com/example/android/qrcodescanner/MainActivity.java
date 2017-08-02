@@ -1,9 +1,11 @@
 package com.example.android.qrcodescanner;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
 
     private Button scanButton;
+    private Button viewDatabaseButton;
     private TextView textView;
     private IntentIntegrator qrscan;
 
@@ -57,15 +60,44 @@ public class MainActivity extends AppCompatActivity {
 
         scanButton = (Button)findViewById(R.id.scan_button);
         textView = (TextView)findViewById(R.id.display_text);
-
+        viewDatabaseButton = (Button)findViewById(R.id.database_button);
         qrscan = new IntentIntegrator(this);
 
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                buttonEffect(scanButton);
                 qrscan.initiateScan();
             }
         });
+        viewDatabaseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonEffect(viewDatabaseButton);
+                Intent intent = new Intent(MainActivity.this,DatabaseActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
+    public static void buttonEffect(View button){
+        button.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        v.getBackground().setColorFilter(0xe05c6bc0, PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
     }
 }
