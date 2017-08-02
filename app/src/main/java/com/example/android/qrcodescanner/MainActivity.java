@@ -1,6 +1,8 @@
 package com.example.android.qrcodescanner;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private Button viewDatabaseButton;
     private TextView textView;
     private IntentIntegrator qrscan;
+    private UsersDbHelper mDbHelper;
 
 
 
@@ -35,10 +38,20 @@ public class MainActivity extends AppCompatActivity {
             }
             else{
                 try{
+
+                    ContentValues values = new ContentValues();
+
                     JSONObject obj = new JSONObject(result.getContents());
                     textView.setText("Name: " + obj.getString("name") + "\n" +
-                            "Registeration Number: " + obj.getString("reg") + "\n" +
+                            "Registration Number: " + obj.getString("reg") + "\n" +
                             "Year: " + obj.getString("year"));
+
+                    values.put(DatabaseContract.UserEntry.USERS_NAME,obj.getString("name"));
+                    values.put(DatabaseContract.UserEntry.USERS_REG,obj.getString("reg"));
+                    values.put(DatabaseContract.UserEntry.YEAR,obj.getString("year"));
+                    SQLiteDatabase db =  mDbHelper.getReadableDatabase();
+                    db.insert(DatabaseContract.UserEntry.USERS_TABLE_NAME,null,values);
+                    Toast.makeText(this,"Data added to database", Toast.LENGTH_SHORT).show();
 
                 }
                 catch (JSONException e){
