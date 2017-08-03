@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 catch (JSONException e){
+                    textView.setText("There was problem parsing the JSON response. The scanned QR fetched this result:\n\n" + result.getContents()
+                     + "\n\n(Help: Make sure that scanned QR code is format: \n{ \"name\" : \"Harshit\" , \"reg\": \"16BCI0039\" , \"year\" : \"Second Year\"})");
                     Log.e("MainActivity", "Error while parsing the data");
                     e.printStackTrace();
                     Toast.makeText(this,result.getContents(),Toast.LENGTH_SHORT).show();
